@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome, {{ intern.first_name }} {{ intern.last_name }}!</h1>
+        <div class="parent">
+            <div class="div1">
+                <div class="nav-buttons">
+                    <button class="nav-button" data-action="upload-journal">Upload Journal</button>
+                    <button class="nav-button" data-action="add-week-report">Add Week Report</button>
+                    <button class="nav-button" data-action="overview">Overview</button>
+                    <form id="logout-form" action="{% url 'logout' %}" method="post" style="width:100%; margin-top:auto;">
+                        {% csrf_token %}
+                        <button type="submit" class="logout-button">Log Out</button>
+                    </form>
+                </div>
+            </div>
+            <div class="div2">
+                <div class="form-container">
+                    <!-- JS will inject the form here -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Add this to your login template, below the main login form -->
+    
+    <script src="{% static 'js/intern_dashboard.js' %}"></script>
+</body>
+</html>

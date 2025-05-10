@@ -1,0 +1,479 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Align content at the top */
+    height: 100vh; /* Full viewport height */
+    overflow: hidden; /* Prevent scrolling outside the body */
+    background: linear-gradient(135deg, #e9eafc 0%, #f7f7fa 100%);
+    min-height: 100vh;
+}
+.card {
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    border: none;
+}
+.card-header {
+    background: #6072E5;
+    color: #fff;
+    border-radius: 16px 16px 0 0;
+    border: none;
+}
+.login-alt-btn {
+    display: block;
+    width: 100%;
+    padding: 12px 0;
+    background-color: #6072E5;
+    color: #fff;
+    text-align: center;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 1em;
+    transition: background 0.2s;
+    border: none;
+}
+.login-alt-btn:hover {
+    background-color: #4b00b3;
+    color: #fff;
+}
+.card-footer {
+    background: transparent;
+    border-top: none;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 40px auto 0 auto;
+    padding: 30px 20px;
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+h1 {
+    margin-bottom: 10px;
+    color: #6072E5;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.parent {
+    width: 100%;
+    height: 100%;
+    margin: 24px;
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 32px;
+    min-height: 500px;
+    box-sizing: border-box;
+}
+
+.div1, .div2 {
+    border-radius: 8px;
+}
+
+.div1 {
+    background-color: #f7f8fd;
+    border-radius: 8px;
+    padding: 24px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    min-width: 220px;
+    box-shadow: 0 2px 8px rgba(96,114,229,0.04);
+}
+
+.div2 {
+    background-color: #f7f8fd;
+    border-radius: 8px;
+    padding: 32px 24px;
+    box-shadow: 0 2px 8px rgba(96,114,229,0.04);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.nav-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    position: relative;
+    width: 100%;
+    align-items: center;
+}
+
+.nav-button, .logout-button {
+    width: 100%;
+    padding: 12px 0;
+    font-size: 1em;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-bottom: 0;
+}
+
+
+
+.nav-button {
+    background-color: #6072E5;
+    color: #fff;
+    width: 100%;
+    padding: 12px 0;
+    font-size: 1em;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-bottom: 0;
+    text-align: center;         /* Center the text */
+    text-decoration: none !important; /* Remove underline */
+    display: block;
+               /* Ensure it fills the parent width */
+}
+
+.nav-button:hover {
+    background-color: #4b00b3;
+}
+
+.logout-button {
+    background-color: #e74c3c;
+    color: #fff;
+    margin-top: 16px;
+}
+
+.logout-button:hover {
+    background-color: #c0392b;
+}
+
+.week-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 26px;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.week-tab {
+    padding: 10px 15px;
+    background-color: #eee;
+    color: #333;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.week-tab:hover {
+    background-color: #ccc;
+}
+
+.week-tab.active {
+    background-color: #6072E5;
+    color: white;
+    border-color: #6072E5;
+}
+
+.week-dropdown {
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.week-label {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    color: #6072E5;
+    font-weight: 600;
+}
+
+.week-select {
+    padding: 8px 12px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 220px;
+    cursor: pointer;
+}
+
+#report-form {
+    border-collapse: collapse;
+    width: 100%;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    margin-bottom: 1rem;
+}
+
+#report-form th, #report-form td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+#report-form th {
+    background-color: #6072E5;
+    color: #fff;
+    font-weight: 600;
+}
+
+#report-form th:nth-child(1), #report-form td:nth-child(1) {
+    width: 15%; /* Set the width for the "Date" column */
+}
+
+#report-form th:nth-child(2), #report-form td:nth-child(2) {
+    width: 5%; /* Set the width for the "No. of Hours" column */
+}
+
+#report-form th:nth-child(3), #report-form td:nth-child(3) {
+    width: 30%; /* Set the width for the "Activities/Tasks" column */
+}
+
+#report-form th:nth-child(4), #report-form td:nth-child(4) {
+    width: 15%; /* Set the width for the "Score" column */
+}
+
+#report-form th:nth-child(5), #report-form td:nth-child(5) {
+    width: 30%; /* Set the width for the "New Learnings" column */
+}
+
+#report-form tbody td:nth-child(1) {
+    width: 15%; /* Set the width for the "Date" column */
+}
+
+#report-form tbody td:nth-child(2) {
+    width: 5%; /* Set the width for the "No. of Hours" column */
+}
+
+#report-form tbody td:nth-child(3) {
+    width: 30%; /* Set the width for the "Activities/Tasks" column */
+}
+
+#report-form tbody td:nth-child(4) {
+    width: 15%; /* Set the width for the "Score" column */
+}
+
+#report-form tbody td:nth-child(5) {
+    width: 50%; /* Set the width for the "New Learnings" column */
+}
+
+#report-form input[type="text"],
+#report-form textarea {
+    width: 100%;
+    height: 120px;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    resize: none;
+    transition: border-color 0.3s ease;
+}
+
+#report-form input[type="text"]:focus,
+#report-form textarea:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+#report-form tbody {
+    display: table-row-group; /* Ensure proper table row grouping */
+    width: 100%; /* Make the tbody span the full width of the table */
+}
+
+#submit-button {
+    background-color: #198754;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+    align-self: flex-end;
+}
+
+#submit-button:hover {
+    background-color: #157347;
+}
+
+.form-container {
+    background: #fff;
+    border-radius: 8px;
+    padding: 24px 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    margin-top: 0;
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    align-items: center; /* Center align all elements */
+    justify-content: flex-start; /* Align elements at the top */
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    overflow-x: auto; /* Allow horizontal scroll if needed */
+    box-sizing: border-box;
+}
+
+#upload-journal-form {
+    display: flex;
+    flex-direction: column; /* Stack form elements vertically */
+    gap: 15px; /* Add spacing between form elements */
+    align-items: center; /* Center form elements horizontally */
+}
+
+#upload-button {
+    background-color: #6072E5;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+#upload-button:hover {
+    background-color: #4b00b3;
+}
+
+.form-container form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#overview-table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 20px auto;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+#overview-table th, #overview-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
+}
+
+#overview-table th {
+    background-color: #f0f0f0;
+    color: #2c3e50;
+}
+
+.overview-table {
+    border-collapse: collapse;
+    width: 98%;
+    margin: 20px auto;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    table-layout: auto; /* Let columns grow with content */
+}
+
+.overview-table th, .overview-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
+    vertical-align: top; /* Align content to the top for multi-line text */
+    word-break: break-word;
+}
+
+.overview-table input,
+.overview-table textarea {
+    width: 95%;
+    box-sizing: border-box;
+    resize: none;
+    font-family: inherit;
+    font-size: 1em;
+    padding: 6px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    background: #fafbfc;
+}
+
+.overview-table textarea {
+    min-height: 40px;
+    /* Remove max-height to allow expansion */
+    max-height: none;
+    height: auto;
+    overflow-y: hidden;
+}
+
+.table,
+.overview-table {
+    width: 100%;
+    max-width: 100%;
+    min-width: 600px; /* Optional: set a min width for better readability */
+    margin: 0 auto 1rem auto;
+    table-layout: auto;
+}
+
+.login-alt-btn {
+    display: block;
+    width: 100%;
+    padding: 12px 0;
+    background-color: #6072E5;
+    color: #fff;
+    text-align: center;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 1em;
+    transition: background 0.2s;
+}
+.login-alt-btn:hover {
+    background-color: #4b00b3;
+}
+
+.alert-success {
+    background-color: #28a745 !important;
+    color: #fff !important;
+}
+
+@media (max-width: 900px) {
+    .parent {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    .div1, .div2 {
+        min-width: 0;
+        padding: 16px 8px;
+    }
+}
+
+@media (max-width: 768px) {
+    .parent {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto;
+    }
+
+    .div1, .div2 {
+        height: auto;
+    }
+
+    .week-tabs {
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 600px) {
+    .container {
+        padding: 10px 2px;
+    }
+    .form-container {
+        padding: 12px 4px;
+    }
+}

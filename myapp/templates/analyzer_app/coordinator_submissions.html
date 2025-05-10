@@ -1,0 +1,46 @@
+{% load static %}
+{% load dict_get %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Submissions</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+</head>
+<body>
+<div class="container">
+    <h2>Latest Activity</h2>
+    {% regroup interns by section as section_list %}
+    {% for section in section_list %}
+        <h4>{{ section.grouper }}</h4>
+        <table class="table table-bordered overview-table">
+            <thead>
+                <tr>
+                    <th>Intern Name</th>
+                    <th>Username</th>
+                    <th>Report Date</th>
+                    <th>Activities</th>
+                    <th>Score</th>
+                    <th>Learnings</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for intern in section.list %}
+                {% with latest_report=latest_reports|dict_get:intern.id %}
+                <tr>
+                    <td>{{ intern.first_name }} {{ intern.last_name }}</td>
+                    <td>{{ intern.username }}</td>
+                    <td>{% if latest_report %}{{ latest_report.date }}{% else %}-{% endif %}</td>
+                    <td>{% if latest_report %}{{ latest_report.activities }}{% else %}-{% endif %}</td>
+                    <td>{% if latest_report %}{{ latest_report.score }}{% else %}-{% endif %}</td>
+                    <td>{% if latest_report %}{{ latest_report.learnings }}{% else %}-{% endif %}</td>
+                </tr>
+                {% endwith %}
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endfor %}
+    <a href="{% url 'coordinator_dashboard' %}" class="btn btn-secondary mt-3">Back to Dashboard</a>
+</div>
+</body>
+</html>

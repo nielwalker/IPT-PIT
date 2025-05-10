@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Submit Section Update</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+</head>
+<body>
+<div class="container">
+    <h2>Submit Section Update to Chairman</h2>
+    <form method="post" action="">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="section" class="form-label">Section</label>
+            <select id="section" name="section" class="form-control" required>
+                {% for section in sections %}
+                    <option value="{{ section }}">{{ section }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="update_text" class="form-label">Update Details</label>
+            <textarea id="update_text" name="update_text" class="form-control" rows="6" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-success w-100">Submit Section Update to Chairman</button>
+        <a href="{% url 'coordinator_dashboard' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Detail</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+</head>
+<body>
+<div class="container">
+    <h2>Student Details</h2>
+    <ul>
+        <li><strong>Name:</strong> {{ intern.first_name }} {{ intern.last_name }}</li>
+        <li><strong>Username:</strong> {{ intern.username }}</li>
+        <li><strong>Section:</strong> {{ intern.section }}</li>
+    </ul>
+    <h4>Reports</h4>
+    <table class="table table-bordered overview-table">
+        <thead>
+            <tr>
+                <th>Week</th>
+                <th>Date</th>
+                <th>No. of Hours</th>
+                <th>Activities/Tasks</th>
+                <th>Score</th>
+                <th>New Learnings</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for report in reports %}
+            <tr>
+                <td>{{ report.week }}</td>
+                <td>{{ report.date }}</td>
+                <td>{{ report.hours }}</td>
+                <td>{{ report.activities }}</td>
+                <td>{{ report.score }}</td>
+                <td>{{ report.new_learnings }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'coordinator_student_reports' %}" class="btn btn-secondary mt-3">Back to Student List</a>
+</div>
+</body>
+</html>

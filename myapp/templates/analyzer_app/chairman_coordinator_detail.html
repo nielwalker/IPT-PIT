@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Coordinator Detail</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+</head>
+<body>
+<div class="container py-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white text-center">
+            <h2>Coordinator: {{ coordinator.first_name }} {{ coordinator.last_name }}</h2>
+        </div>
+        <div class="card-body">
+            <h5>Submitted Section Updates</h5>
+            {% if section_updates %}
+                <ul>
+                    {% for update in section_updates %}
+                        <li>
+                            <strong>{{ update.submitted_at|date:"Y-m-d H:i" }}</strong>:<br>
+                            {{ update.update_text }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No section updates submitted.</p>
+            {% endif %}
+
+            <hr>
+            <h5>Weekly Assessment Reports</h5>
+            <div class="table-responsive mb-4">
+                <table class="table table-bordered table-striped">
+                    <thead class="table-primary">
+                        <tr>
+                            <th>Intern</th>
+                            <th>Week</th>
+                            <th>Assessment</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for assessment in assessments %}
+                        <tr>
+                            <td>{{ assessment.intern.first_name }} {{ assessment.intern.last_name }}</td>
+                            <td>{{ assessment.week }}</td>
+                            <td>{{ assessment.assessment }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3" class="text-center">No assessments found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <h5>Interns under {{ coordinator.first_name }} {{ coordinator.last_name }}</h5>
+            <ul>
+                {% for intern in interns %}
+                    <li>
+                        <a href="{% url 'portfolio_analysis' intern.id %}">
+                            {{ intern.first_name }} {{ intern.last_name }} ({{ intern.username }})
+                        </a>
+                    </li>
+                {% empty %}
+                    <li>No interns assigned.</li>
+                {% endfor %}
+            </ul>
+            <a href="{% url 'chairman_dashboard' %}" class="btn btn-secondary">Back to Dashboard</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

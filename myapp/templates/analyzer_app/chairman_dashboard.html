@@ -1,0 +1,101 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chairman Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container py-5">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white text-center">
+                <h2>Chairman Dashboard</h2>
+            </div>
+            <div class="card-body">
+                <p class="lead">Welcome, {{ chairman.first_name }}!</p>
+                <hr>
+                <h5>Coordinator Weekly Assessment Reports</h5>
+                <div class="table-responsive mb-4">
+                    <table class="table table-bordered table-striped">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>Coordinator</th>
+                                <th>Intern</th>
+                                <th>Week</th>
+                                <th>Assessment</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for assessment in assessments %}
+                            <tr>
+                                <td>{{ assessment.coordinator.first_name }} {{ assessment.coordinator.last_name }}</td>
+                                <td>{{ assessment.intern.first_name }} {{ assessment.intern.last_name }}</td>
+                                <td>{{ assessment.week }}</td>
+                                <td>{{ assessment.assessment }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4" class="text-center">No assessments found.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <h5>Coordinators</h5>
+                <div class="mb-4">
+                    {% if coordinators %}
+                        <ul>
+                            {% for coordinator in coordinators %}
+                                <li>
+                                    <a href="{% url 'chairman_coordinator_detail' coordinator.id %}">
+                                        {{ coordinator.first_name }} {{ coordinator.last_name }} ({{ coordinator.username }})
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>No coordinators found.</p>
+                    {% endif %}
+                </div>
+                <h5>Coordinators by Section</h5>
+                <div class="mb-4">
+                    {% if section_coordinators %}
+                        {% for section, coordinators in section_coordinators.items %}
+                            <div style="margin-bottom:1.5rem;">
+                                <strong>{{ section }}</strong>
+                                <ul style="margin-left:1rem;">
+                                    {% for coordinator in coordinators %}
+                                        <li>
+                                            <a href="{% url 'chairman_coordinator_detail' coordinator.id %}">
+                                                {{ coordinator.first_name }} {{ coordinator.last_name }} ({{ coordinator.username }})
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p>No coordinators found.</p>
+                    {% endif %}
+                </div>
+                <h5>Section Updates</h5>
+                <ul>
+                    {% for update in section_updates %}
+                        <li>
+                            <strong>Section: {{ update.section }}</strong><br>
+                            <strong>{{ update.submitted_at|date:"Y-m-d H:i" }}</strong>:<br>
+                            {{ update.update_text }}
+                        </li>
+                    {% endfor %}
+                </ul>
+                <form method="post" action="{% url 'chairman_logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger w-100">Log Out</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
