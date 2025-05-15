@@ -14,20 +14,6 @@
             <h2>Coordinator: {{ coordinator.first_name }} {{ coordinator.last_name }}</h2>
         </div>
         <div class="card-body">
-            <h5>Submitted Section Updates</h5>
-            {% if section_updates %}
-                <ul>
-                    {% for update in section_updates %}
-                        <li>
-                            <strong>{{ update.submitted_at|date:"Y-m-d H:i" }}</strong>:<br>
-                            {{ update.update_text }}
-                        </li>
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <p>No section updates submitted.</p>
-            {% endif %}
-
             <hr>
             <h5>Weekly Assessment Reports</h5>
             <div class="table-responsive mb-4">
