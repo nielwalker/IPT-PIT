@@ -451,23 +451,24 @@ from .po_rubrics import PO_RUBRICS
 
 def map_summary_to_po(summary):
     # Define keywords for each PO (customize as needed)
-    PO_KEYWORDS = {
-        "a": ["science", "mathematics", "critical", "creative thinking"],
-        "b": ["best practices", "standards"],
-        "c": ["analyze", "complex", "quantitative", "requirements"],
-        "d": ["user needs", "evaluation", "administration"],
-        "e": ["design", "implement", "evaluate", "components", "programs"],
-        "f": ["integrate", "public health", "safety", "societal"],
-        "g": ["adapt", "techniques", "tools", "limitations"],
-        "h": ["collaboratively", "leader", "teams", "multidisciplinary"],
-        "i": ["project plan"],
-        "j": ["communicate", "oral", "written", "persuasively"],
-        "k": ["impact", "organizations", "society"],
-        "l": ["ethical", "legal", "security", "responsibilities"],
-        "m": ["independent learning", "specialized field"],
-        "n": ["generation", "knowledge", "research", "development"],
-        "o": ["Filipino", "heritage", "culture"],
+    PO_RUBRICS = {
+    'PO:A': ['science', 'scientific', 'mathematic', 'math', 'algebra', 'calculus', 'critic', 'analyt', 'logic', 'reason', 'creative', 'innovative', 'idea'],
+    'PO:B': ['best', 'practic', 'convent', 'standard', 'protocol', 'guidelin', 'norm'],
+    'PO:C': ['analyze', 'examine', 'assess', 'evalute', 'inspect', 'complex', 'complicate', 'difficulties', 'challenge', 'quantity', 'number', 'mathematic', 'require', 'criteria', 'specify'],
+    'PO:D': ['user', 'need', 'evaluate', 'assess', 'review', 'analysis', 'administrator', 'manage', 'supervise'],
+    'PO:E': ['design', 'develop', 'architect', 'structure', 'implement', 'build', 'create', 'evaluate', 'test', 'review', 'component', 'module', 'element', 'program', 'system', 'software'],
+    'PO:F': ['integrate', 'combine', 'merge', 'public', 'health', 'community', 'secure', 'safety', 'well', 'society', 'social'],
+    'PO:G': ['adapt', 'adjust', 'modify', 'custom', 'technique', 'method', 'approach', 'tool', 'util', 'applicate', 'limit', 'constraint', 'boundaries'],
+    'PO:H': ['collaborator', 'together', 'cooperate', 'coordinate', 'leader', 'lead', 'supervise', 'manage', 'team', 'group', 'squad', 'multidisciplinary', 'cross', 'function'],
+    'PO:I': ['project', 'plan', 'schedule', 'timeline', 'roadmap', 'milestone'],
+    'PO:J': ['communicate', 'convey', 'express', 'report', 'share', 'oral', 'spoken', 'verbal', 'written', 'textual', 'document', 'persuasive', 'convince', 'effect'],
+    'PO:K': ['impact', 'effect', 'influence', 'organ', 'companie', 'institute', 'society', 'community', 'public'],
+    'PO:L': ['ethic', 'moral', 'principle', 'legal', 'law', 'compliant', 'secure', 'protect', 'safety', 'response', 'oblige', 'dutie'],
+    'PO:M': ['independent', 'learn', 'self', 'studies', 'autonom', 'self', 'pace', 'special', 'field', 'domain', 'knowledge', 'expertise'],
+    'PO:N': ['generate', 'create', 'produce', 'knowledge', 'inform', 'insight', 'research', 'investigate', 'explore', 'develop', 'progress', 'advance'],
+    'PO:O': ['filipino', 'philippine', 'pinoy', 'heritag', 'tradit', 'legaci', 'culture', 'custome', 'ident', 'value']
     }
+
     summary_lower = summary.lower()
     po_counts = {po: 0 for po in PO_RUBRICS}
     for po, keywords in PO_RUBRICS.items():
@@ -559,22 +560,23 @@ def coordinator_student_detail(request, intern_id):
     words = [stemmer.stem(word.lower()) for word in combined_text.split()]
 
     PO_RUBRICS = {
-        "a": ["scienc", "scientif", "mathemat", "math", "algebra", "calculus", "critic", "analyt", "logic", "reason", "creativ", "innovat", "ideat"],
-        "b": ["best", "practic", "convent", "standard", "protocol", "guidelin", "norm"],
-        "c": ["analyz", "examin", "assess", "evalu", "inspect", "complex", "complic", "difficulti", "challeng", "quantit", "numer", "mathemat", "requir", "criteri", "specif"],
-        "d": ["user", "need", "evalu", "assess", "review", "analysi", "administr", "manag", "supervis"],
-        "e": ["design", "develop", "architect", "structur", "implement", "build", "creat", "evalu", "test", "review", "component", "modul", "element", "program", "system", "softwar"],
-        "f": ["integr", "combin", "merg", "public", "health", "commun", "secur", "safeti", "well", "societ", "social"],
-        "g": ["adapt", "adjust", "modifi", "custom", "techniqu", "method", "approach", "tool", "util", "applic", "limit", "constraint", "boundari"],
-        "h": ["collabor", "togeth", "cooper", "coordin", "leader", "lead", "supervis", "manag", "team", "group", "squad", "multidisciplinari", "cross", "function"],
-        "i": ["project", "plan", "schedul", "timeline", "roadmap", "mileston"],
-        "j": ["communic", "convey", "express", "report", "share", "oral", "spoken", "verbal", "written", "textual", "document", "persuas", "convinc", "effect"],
-        "k": ["impact", "effect", "influenc", "organ", "compani", "institut", "societi", "commun", "public"],
-        "l": ["ethic", "moral", "principl", "legal", "law", "compliant", "secur", "protect", "safeti", "respons", "oblig", "duti"],
-        "m": ["independ", "learn", "self", "studi", "autonom", "self", "pace", "special", "field", "domain", "knowledg", "expertis"],
-        "n": ["generat", "creat", "produc", "knowledg", "inform", "insight", "research", "investig", "explor", "develop", "progress", "advanc"],
-        "o": ["filipino", "philippin", "pinoy", "heritag", "tradit", "legaci", "cultur", "custom", "ident", "valu"]
+    'PO:A': ['science', 'scientific', 'mathematic', 'math', 'algebra', 'calculus', 'critic', 'analyt', 'logic', 'reason', 'creative', 'innovative', 'idea'],
+    'PO:B': ['best', 'practic', 'convent', 'standard', 'protocol', 'guidelin', 'norm'],
+    'PO:C': ['analyze', 'examine', 'assess', 'evalute', 'inspect', 'complex', 'complicate', 'difficulties', 'challenge', 'quantity', 'number', 'mathematic', 'require', 'criteria', 'specify'],
+    'PO:D': ['user', 'need', 'evaluate', 'assess', 'review', 'analysis', 'administrator', 'manage', 'supervise'],
+    'PO:E': ['design', 'develop', 'architect', 'structure', 'implement', 'build', 'create', 'evaluate', 'test', 'review', 'component', 'module', 'element', 'program', 'system', 'software'],
+    'PO:F': ['integrate', 'combine', 'merge', 'public', 'health', 'community', 'secure', 'safety', 'well', 'society', 'social'],
+    'PO:G': ['adapt', 'adjust', 'modify', 'custom', 'technique', 'method', 'approach', 'tool', 'util', 'applicate', 'limit', 'constraint', 'boundaries'],
+    'PO:H': ['collaborator', 'together', 'cooperate', 'coordinate', 'leader', 'lead', 'supervise', 'manage', 'team', 'group', 'squad', 'multidisciplinary', 'cross', 'function'],
+    'PO:I': ['project', 'plan', 'schedule', 'timeline', 'roadmap', 'milestone'],
+    'PO:J': ['communicate', 'convey', 'express', 'report', 'share', 'oral', 'spoken', 'verbal', 'written', 'textual', 'document', 'persuasive', 'convince', 'effect'],
+    'PO:K': ['impact', 'effect', 'influence', 'organ', 'companie', 'institute', 'society', 'community', 'public'],
+    'PO:L': ['ethic', 'moral', 'principle', 'legal', 'law', 'compliant', 'secure', 'protect', 'safety', 'response', 'oblige', 'dutie'],
+    'PO:M': ['independent', 'learn', 'self', 'studies', 'autonom', 'self', 'pace', 'special', 'field', 'domain', 'knowledge', 'expertise'],
+    'PO:N': ['generate', 'create', 'produce', 'knowledge', 'inform', 'insight', 'research', 'investigate', 'explore', 'develop', 'progress', 'advance'],
+    'PO:O': ['filipino', 'philippine', 'pinoy', 'heritag', 'tradit', 'legaci', 'culture', 'custome', 'ident', 'value']
     }
+
     stem_to_pos = defaultdict(list)
     for po, stems in PO_RUBRICS.items():
         for stem in stems:
@@ -700,22 +702,23 @@ from .models import Intern, InternReport  # Adjust model imports as needed
 
 # Define your PO rubrics with stemmed keywords
 PO_RUBRICS = {
-    "a": ["scienc", "scientif", "mathemat", "math", "algebra", "calculus", "critic", "analyt", "logic", "reason", "creativ", "innovat", "ideat"],
-    "b": ["best", "practic", "convent", "standard", "protocol", "guidelin", "norm"],
-    "c": ["analyz", "examin", "assess", "evalu", "inspect", "complex", "complic", "difficulti", "challeng", "quantit", "numer", "mathemat", "requir", "criteri", "specif"],
-    "d": ["user", "need", "evalu", "assess", "review", "analysi", "administr", "manag", "supervis"],
-    "e": ["design", "develop", "architect", "structur", "implement", "build", "creat", "evalu", "test", "review", "component", "modul", "element", "program", "system", "softwar"],
-    "f": ["integr", "combin", "merg", "public", "health", "commun", "secur", "safeti", "well", "societ", "social"],
-    "g": ["adapt", "adjust", "modifi", "custom", "techniqu", "method", "approach", "tool", "util", "applic", "limit", "constraint", "boundari"],
-    "h": ["collabor", "togeth", "cooper", "coordin", "leader", "lead", "supervis", "manag", "team", "group", "squad", "multidisciplinari", "cross", "function"],
-    "i": ["project", "plan", "schedul", "timeline", "roadmap", "mileston"],
-    "j": ["communic", "convey", "express", "report", "share", "oral", "spoken", "verbal", "written", "textual", "document", "persuas", "convinc", "effect"],
-    "k": ["impact", "effect", "influenc", "organ", "compani", "institut", "societi", "commun", "public"],
-    "l": ["ethic", "moral", "principl", "legal", "law", "compliant", "secur", "protect", "safeti", "respons", "oblig", "duti"],
-    "m": ["independ", "learn", "self", "studi", "autonom", "self", "pace", "special", "field", "domain", "knowledg", "expertis"],
-    "n": ["generat", "creat", "produc", "knowledg", "inform", "insight", "research", "investig", "explor", "develop", "progress", "advanc"],
-    "o": ["filipino", "philippin", "pinoy", "heritag", "tradit", "legaci", "cultur", "custom", "ident", "valu"]
+    'PO:A': ['science', 'scientific', 'mathematic', 'math', 'algebra', 'calculus', 'critic', 'analyt', 'logic', 'reason', 'creative', 'innovative', 'idea'],
+    'PO:B': ['best', 'practic', 'convent', 'standard', 'protocol', 'guidelin', 'norm'],
+    'PO:C': ['analyze', 'examine', 'assess', 'evalute', 'inspect', 'complex', 'complicate', 'difficulties', 'challenge', 'quantity', 'number', 'mathematic', 'require', 'criteria', 'specify'],
+    'PO:D': ['user', 'need', 'evaluate', 'assess', 'review', 'analysis', 'administrator', 'manage', 'supervise'],
+    'PO:E': ['design', 'develop', 'architect', 'structure', 'implement', 'build', 'create', 'evaluate', 'test', 'review', 'component', 'module', 'element', 'program', 'system', 'software'],
+    'PO:F': ['integrate', 'combine', 'merge', 'public', 'health', 'community', 'secure', 'safety', 'well', 'society', 'social'],
+    'PO:G': ['adapt', 'adjust', 'modify', 'custom', 'technique', 'method', 'approach', 'tool', 'util', 'applicate', 'limit', 'constraint', 'boundaries'],
+    'PO:H': ['collaborator', 'together', 'cooperate', 'coordinate', 'leader', 'lead', 'supervise', 'manage', 'team', 'group', 'squad', 'multidisciplinary', 'cross', 'function'],
+    'PO:I': ['project', 'plan', 'schedule', 'timeline', 'roadmap', 'milestone'],
+    'PO:J': ['communicate', 'convey', 'express', 'report', 'share', 'oral', 'spoken', 'verbal', 'written', 'textual', 'document', 'persuasive', 'convince', 'effect'],
+    'PO:K': ['impact', 'effect', 'influence', 'organ', 'companie', 'institute', 'society', 'community', 'public'],
+    'PO:L': ['ethic', 'moral', 'principle', 'legal', 'law', 'compliant', 'secure', 'protect', 'safety', 'response', 'oblige', 'dutie'],
+    'PO:M': ['independent', 'learn', 'self', 'studies', 'autonom', 'self', 'pace', 'special', 'field', 'domain', 'knowledge', 'expertise'],
+    'PO:N': ['generate', 'create', 'produce', 'knowledge', 'inform', 'insight', 'research', 'investigate', 'explore', 'develop', 'progress', 'advance'],
+    'PO:O': ['filipino', 'philippine', 'pinoy', 'heritag', 'tradit', 'legaci', 'culture', 'custome', 'ident', 'value']
 }
+
 
 stemmer = PorterStemmer()
 
@@ -806,6 +809,55 @@ def coordinator_student_detail_view(request, intern_id):
     # Summarize all reports
     all_texts = ' '.join([strip_tags(report.new_learnings) for report in reports if report.new_learnings])
     summarized_text = all_texts[:500] + '...' if len(all_texts) > 500 else all_texts  # Simple summary
+
+    po_distribution = extract_po_distribution(summarized_text)
+
+    context = {
+        'intern': intern,
+        'reports': reports,
+        'summary': summarized_text,
+        'po_distribution': po_distribution,
+    }
+    return render(request, 'analyzer_app/coordinator_student_detail.html', context)
+
+import nltk
+from nltk.tokenize import sent_tokenize, word_tokenize
+from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer
+
+def summarize_text(text, num_sentences=3):
+    nltk.download('punkt', quiet=True)
+    nltk.download('stopwords', quiet=True)
+    sentences = sent_tokenize(text)
+    stemmer = PorterStemmer()
+    stop_words = set(stopwords.words('english'))
+    words = []
+    for sentence in sentences:
+        for word in word_tokenize(sentence):
+            if word.lower() not in stop_words and word.isalpha():
+                words.append(stemmer.stem(word))
+    freq_dist = nltk.FreqDist(words)
+    top_words = [word[0] for word in freq_dist.most_common(10)]
+    scored_sentences = []
+    for sentence in sentences:
+        sentence_words = word_tokenize(sentence.lower())
+        sentence_score = 0
+        for word in sentence_words:
+            if stemmer.stem(word) in top_words:
+                sentence_score += 1
+        scored_sentences.append((sentence, sentence_score))
+    # Get top N sentences as summary
+    from heapq import nlargest
+    summary_sentences = [s[0] for s in nlargest(num_sentences, scored_sentences, key=lambda x: x[1])]
+    return " ".join(summary_sentences) if summary_sentences else text
+
+def coordinator_student_detail_view(request, intern_id):
+    intern = Intern.objects.get(id=intern_id)
+    reports = InternReport.objects.filter(intern=intern).order_by('week', 'date')
+
+    # Summarize all new learnings only
+    all_texts = ' '.join([strip_tags(report.new_learnings) for report in reports if report.new_learnings])
+    summarized_text = summarize_text(all_texts) if all_texts.strip() else "No new learning data found for this student."
 
     po_distribution = extract_po_distribution(summarized_text)
 
