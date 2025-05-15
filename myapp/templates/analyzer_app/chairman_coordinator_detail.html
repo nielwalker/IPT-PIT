@@ -33,7 +33,7 @@
                 <table class="table table-bordered table-striped">
                     <thead class="table-primary">
                         <tr>
-                            <th>Intern</th>
+                            <th>Section</th>
                             <th>Week</th>
                             <th>Assessment</th>
                         </tr>
@@ -41,7 +41,7 @@
                     <tbody>
                         {% for assessment in assessments %}
                         <tr>
-                            <td>{{ assessment.intern.first_name }} {{ assessment.intern.last_name }}</td>
+                            <td>{{ assessment.intern.section }}</td>
                             <td>{{ assessment.week }}</td>
                             <td>{{ assessment.assessment }}</td>
                         </tr>

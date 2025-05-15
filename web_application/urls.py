@@ -22,7 +22,7 @@ from myapp.views import (
     chairman_logout_view, coordinator_dashboard_view, interns_reports_view,
     coordinator_logout_view, intern_register_view, intern_dashboard_view,
     intern_logout_view, add_week_report_view, get_week_reports_view,
-    coordinator_sections_view, coordinator_submissions_view, add_rating_view,portfolio_analysis_view
+    coordinator_sections_view, coordinator_submissions_view, add_rating_view,portfolio_analysis_view, coordinator_view_interns, coordinator_intern_summary_view
 )
 
 urlpatterns = [
@@ -45,5 +45,7 @@ urlpatterns = [
     path('get-week-reports/', get_week_reports_view, name='get_week_reports'),
     path('admin/', admin.site.urls),
     path('coordinator/add-rating/<int:report_id>/', add_rating_view, name='add_rating'),
-    path('portfolio-analysis/<int:intern_id>/', portfolio_analysis_view, name='portfolio_analysis')
+    path('portfolio-analysis/<int:intern_id>/', portfolio_analysis_view, name='portfolio_analysis'),
+    path('coordinator/view-interns/', coordinator_view_interns, name='coordinator_view_interns'),
+    path('coordinator/interns-summary/', coordinator_intern_summary_view, name='coordinator_interns_summary'),
 ]

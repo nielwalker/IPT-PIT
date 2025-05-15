@@ -16,13 +16,13 @@
             <div class="card-body">
                 <p class="lead">Welcome, {{ chairman.first_name }}!</p>
                 <hr>
-                <h5>Coordinator Weekly Assessment Reports</h5>
+                <h5>Recent Activity</h5>
                 <div class="table-responsive mb-4">
                     <table class="table table-bordered table-striped">
                         <thead class="table-primary">
                             <tr>
                                 <th>Coordinator</th>
-                                <th>Intern</th>
+                                <th>Section</th>
                                 <th>Week</th>
                                 <th>Assessment</th>
                             </tr>
@@ -31,7 +31,7 @@
                             {% for assessment in assessments %}
                             <tr>
                                 <td>{{ assessment.coordinator.first_name }} {{ assessment.coordinator.last_name }}</td>
-                                <td>{{ assessment.intern.first_name }} {{ assessment.intern.last_name }}</td>
+                                <td>{{ assessment.intern.section }}</td>
                                 <td>{{ assessment.week }}</td>
                                 <td>{{ assessment.assessment }}</td>
                             </tr>
@@ -59,28 +59,6 @@
                         <p>No coordinators found.</p>
                     {% endif %}
                 </div>
-                <h5>Coordinators by Section</h5>
-                <div class="mb-4">
-                    {% if section_coordinators %}
-                        {% for section, coordinators in section_coordinators.items %}
-                            <div style="margin-bottom:1.5rem;">
-                                <strong>{{ section }}</strong>
-                                <ul style="margin-left:1rem;">
-                                    {% for coordinator in coordinators %}
-                                        <li>
-                                            <a href="{% url 'chairman_coordinator_detail' coordinator.id %}">
-                                                {{ coordinator.first_name }} {{ coordinator.last_name }} ({{ coordinator.username }})
-                                            </a>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                        {% endfor %}
-                    {% else %}
-                        <p>No coordinators found.</p>
-                    {% endif %}
-                </div>
-                <h5>Section Updates</h5>
                 <ul>
                     {% for update in section_updates %}
                         <li>

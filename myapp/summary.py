@@ -14,7 +14,7 @@ def summarize_section_new_learning(section_name):
     # Gather all new learning texts for interns in the given section
     interns = Intern.objects.filter(section=section_name)
     reports = InternReport.objects.filter(intern__in=interns)
-    all_text = " ".join([report.new_learning for report in reports if hasattr(report, 'new_learning') and report.new_learning])
+    all_text = " ".join([report.new_learnings for report in reports if hasattr(report, 'new_learning') and report.new_learnings])
 
     if not all_text.strip():
         print("No new learning data found for this section.")
@@ -43,6 +43,14 @@ def summarize_section_new_learning(section_name):
 
     for sentence in nlargest(3, summary, key=lambda x: x[1]):
         print(sentence[0])
+
+def summarize_intern_new_learning(intern_id):
+    reports = InternReport.objects.filter(intern_id=intern_id)
+    all_text = " ".join([report.new_learnings for report in reports if hasattr(report, 'new_learnings') and report.new_learnings])
+    if not all_text.strip():
+        return "No new learnings submitted."
+    # Use your existing NLTK summarization logic here, or just return the concatenated text
+    return all_text  # Or return your summary string
 
 # Example usage:
 # summarize_section_new_learning('Section A')

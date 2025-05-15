@@ -9,30 +9,37 @@
 <body>
 <div class="container">
     <h2>All Students</h2>
-    <table class="table table-bordered overview-table">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Username</th>
-                <th>Section</th>
-                <th>Details</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for intern in interns %}
-            <tr>
-                <td>{{ intern.first_name }} {{ intern.last_name }}</td>
-                <td>{{ intern.username }}</td>
-                <td>{{ intern.section }}</td>
-                <td>
-                    <a href="{% url 'coordinator_student_detail' intern.id %}" class="btn btn-primary btn-sm">View Details</a>
-                </td>
-            </tr>
-        {% empty %}
-            <tr><td colspan="4">No students found.</td></tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <form method="get" action="{% url 'coordinator_submit_update' %}" style="margin-bottom: 1.5rem;">
+        <button type="submit" class="btn btn-success w-100">Submit Section Update to Chairman</button>
+    </form>
+    {% regroup interns by section as section_list %}
+    {% for section in section_list %}
+        <h4>{{ section.grouper }}</h4>
+        <table class="table table-bordered overview-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Username</th>
+                    <th>Section</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for intern in section.list %}
+                <tr>
+                    <td>{{ intern.first_name }} {{ intern.last_name }}</td>
+                    <td>{{ intern.username }}</td>
+                    <td>{{ intern.section }}</td>
+                    <td>
+                        <a href="{% url 'coordinator_student_detail' intern.id %}" class="btn btn-primary btn-sm">View Details</a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="4">No students found.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endfor %}
     <a href="{% url 'coordinator_dashboard' %}" class="btn btn-secondary mt-3">Back to Dashboard</a>
 </div>
 </body>

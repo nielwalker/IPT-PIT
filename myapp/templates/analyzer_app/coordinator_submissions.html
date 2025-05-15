@@ -17,25 +17,30 @@
             <thead>
                 <tr>
                     <th>Intern Name</th>
-                    <th>Username</th>
+                    <th>Week</th>
                     <th>Report Date</th>
                     <th>Activities</th>
                     <th>Score</th>
-                    <th>Learnings</th>
+                    <th>New Learnings</th>
                 </tr>
             </thead>
             <tbody>
             {% for intern in section.list %}
-                {% with latest_report=latest_reports|dict_get:intern.id %}
+                {% for report in intern_reports|get_item:intern.id %}
                 <tr>
                     <td>{{ intern.first_name }} {{ intern.last_name }}</td>
-                    <td>{{ intern.username }}</td>
-                    <td>{% if latest_report %}{{ latest_report.date }}{% else %}-{% endif %}</td>
-                    <td>{% if latest_report %}{{ latest_report.activities }}{% else %}-{% endif %}</td>
-                    <td>{% if latest_report %}{{ latest_report.score }}{% else %}-{% endif %}</td>
-                    <td>{% if latest_report %}{{ latest_report.learnings }}{% else %}-{% endif %}</td>
+                    <td>{{ report.week }}</td>
+                    <td>{{ report.date }}</td>
+                    <td>{{ report.activities }}</td>
+                    <td>{{ report.score }}</td>
+                    <td>{{ report.new_learnings }}</td>
                 </tr>
-                {% endwith %}
+                {% empty %}
+                <tr>
+                    <td>{{ intern.first_name }} {{ intern.last_name }}</td>
+                    <td colspan="5">No reports submitted.</td>
+                </tr>
+                {% endfor %}
             {% endfor %}
             </tbody>
         </table>

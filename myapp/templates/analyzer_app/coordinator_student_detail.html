@@ -2,9 +2,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Student Detail</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 <div class="container">
@@ -14,6 +16,7 @@
         <li><strong>Username:</strong> {{ intern.username }}</li>
         <li><strong>Section:</strong> {{ intern.section }}</li>
     </ul>
+
     <h4>Reports</h4>
     <table class="table table-bordered overview-table">
         <thead>
@@ -39,6 +42,80 @@
         {% endfor %}
         </tbody>
     </table>
+
+    <h4>Summary of All New Learnings</h4>
+    <div class="card p-3 mb-3">
+        {{ summary|default:"No new learnings submitted." }}
+    </div>
+
+    <h4>PO Contribution Chart</h4>
+    <canvas id="poChart" width="700" height="400"></canvas>
+    <div style="max-width:700px;">
+        <canvas id="skillsChart" width="700" height="400"></canvas>
+    </div>
+    <script id="graphs-data" type="application/json">
+{{ graphs_data|safe }}
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const raw = document.getElementById("graphs-data").textContent.trim();
+            let parsed = { labels: [], data: [] };
+            try {
+                parsed = JSON.parse(raw);
+            } catch (e) {
+                console.error("Invalid JSON for graphs_data", e);
+            }
+
+            const ctx = document.getElementById('poChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: parsed.labels.map(label => label.toUpperCase()),
+                    datasets: [{
+                        label: 'PO Contribution (%)',
+                        data: parsed.data,
+                        backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            title: {
+                                display: true,
+                                text: 'Percentage'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'PO Code'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.parsed.y + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{% static 'js/portfolio_analysis_chart.js' %}"></script>
+
+
     <a href="{% url 'coordinator_student_reports' %}" class="btn btn-secondary mt-3">Back to Student List</a>
 </div>
 </body>
