@@ -560,33 +560,19 @@ def coordinator_student_detail(request, intern_id):
 
     PO_RUBRICS = {
         "a": ["scienc", "scientif", "mathemat", "math", "algebra", "calculus", "critic", "analyt", "logic", "reason", "creativ", "innovat", "ideat"],
-        
         "b": ["best", "practic", "convent", "standard", "protocol", "guidelin", "norm"],
-        
         "c": ["analyz", "examin", "assess", "evalu", "inspect", "complex", "complic", "difficulti", "challeng", "quantit", "numer", "mathemat", "requir", "criteri", "specif"],
-        
         "d": ["user", "need", "evalu", "assess", "review", "analysi", "administr", "manag", "supervis"],
-        
         "e": ["design", "develop", "architect", "structur", "implement", "build", "creat", "evalu", "test", "review", "component", "modul", "element", "program", "system", "softwar"],
-        
         "f": ["integr", "combin", "merg", "public", "health", "commun", "secur", "safeti", "well", "societ", "social"],
-        
         "g": ["adapt", "adjust", "modifi", "custom", "techniqu", "method", "approach", "tool", "util", "applic", "limit", "constraint", "boundari"],
-        
         "h": ["collabor", "togeth", "cooper", "coordin", "leader", "lead", "supervis", "manag", "team", "group", "squad", "multidisciplinari", "cross", "function"],
-        
         "i": ["project", "plan", "schedul", "timeline", "roadmap", "mileston"],
-        
         "j": ["communic", "convey", "express", "report", "share", "oral", "spoken", "verbal", "written", "textual", "document", "persuas", "convinc", "effect"],
-        
         "k": ["impact", "effect", "influenc", "organ", "compani", "institut", "societi", "commun", "public"],
-        
         "l": ["ethic", "moral", "principl", "legal", "law", "compliant", "secur", "protect", "safeti", "respons", "oblig", "duti"],
-        
         "m": ["independ", "learn", "self", "studi", "autonom", "self", "pace", "special", "field", "domain", "knowledg", "expertis"],
-        
         "n": ["generat", "creat", "produc", "knowledg", "inform", "insight", "research", "investig", "explor", "develop", "progress", "advanc"],
-        
         "o": ["filipino", "philippin", "pinoy", "heritag", "tradit", "legaci", "cultur", "custom", "ident", "valu"]
     }
     stem_to_pos = defaultdict(list)
@@ -679,9 +665,14 @@ def student_detail_view(request, intern_id):
     all_new_learnings = " ".join(report.new_learnings for report in reports if report.new_learnings)
     from .po_rubrics import PO_RUBRICS
     po_counts = map_summary_to_po(all_new_learnings)
+    total = sum(po_counts.values())
+    if total > 0:
+        po_percentages = {po: round((count / total) * 100, 2) for po, count in po_counts.items()}
+    else:
+        po_percentages = {po: 0 for po in po_counts}
     graphs_data = {
         "labels": list(po_counts.keys()),
-        "data": list(po_counts.values()),
+        "data": [po_percentages[po] for po in po_counts.keys()],
     }
     summary = all_new_learnings if all_new_learnings else "No new learnings submitted."
     
@@ -700,3 +691,117 @@ def student_detail_view(request, intern_id):
         "po_percentages": po_percentages,
     }
     return render(request, "analyzer_app/coordinator_student_detail.html", context)
+
+import json
+import re
+from django.shortcuts import render, get_object_or_404
+from nltk.stem import PorterStemmer
+from .models import Intern, InternReport  # Adjust model imports as needed
+
+# Define your PO rubrics with stemmed keywords
+PO_RUBRICS = {
+    "a": ["scienc", "scientif", "mathemat", "math", "algebra", "calculus", "critic", "analyt", "logic", "reason", "creativ", "innovat", "ideat"],
+    "b": ["best", "practic", "convent", "standard", "protocol", "guidelin", "norm"],
+    "c": ["analyz", "examin", "assess", "evalu", "inspect", "complex", "complic", "difficulti", "challeng", "quantit", "numer", "mathemat", "requir", "criteri", "specif"],
+    "d": ["user", "need", "evalu", "assess", "review", "analysi", "administr", "manag", "supervis"],
+    "e": ["design", "develop", "architect", "structur", "implement", "build", "creat", "evalu", "test", "review", "component", "modul", "element", "program", "system", "softwar"],
+    "f": ["integr", "combin", "merg", "public", "health", "commun", "secur", "safeti", "well", "societ", "social"],
+    "g": ["adapt", "adjust", "modifi", "custom", "techniqu", "method", "approach", "tool", "util", "applic", "limit", "constraint", "boundari"],
+    "h": ["collabor", "togeth", "cooper", "coordin", "leader", "lead", "supervis", "manag", "team", "group", "squad", "multidisciplinari", "cross", "function"],
+    "i": ["project", "plan", "schedul", "timeline", "roadmap", "mileston"],
+    "j": ["communic", "convey", "express", "report", "share", "oral", "spoken", "verbal", "written", "textual", "document", "persuas", "convinc", "effect"],
+    "k": ["impact", "effect", "influenc", "organ", "compani", "institut", "societi", "commun", "public"],
+    "l": ["ethic", "moral", "principl", "legal", "law", "compliant", "secur", "protect", "safeti", "respons", "oblig", "duti"],
+    "m": ["independ", "learn", "self", "studi", "autonom", "self", "pace", "special", "field", "domain", "knowledg", "expertis"],
+    "n": ["generat", "creat", "produc", "knowledg", "inform", "insight", "research", "investig", "explor", "develop", "progress", "advanc"],
+    "o": ["filipino", "philippin", "pinoy", "heritag", "tradit", "legaci", "cultur", "custom", "ident", "valu"]
+}
+
+stemmer = PorterStemmer()
+
+def map_summary_to_po(summary):
+    summary_lower = summary.lower()
+    words = re.findall(r'\b[a-z]+\b', summary_lower)
+    stemmed_words = [stemmer.stem(word) for word in words]
+    po_counts = {po: 0 for po in PO_RUBRICS}
+    for po, keywords in PO_RUBRICS.items():
+        for keyword in keywords:
+            po_counts[po] += stemmed_words.count(keyword)
+    return po_counts
+
+def coordinator_student_detail(request, intern_id):
+    intern = get_object_or_404(Intern, id=intern_id)
+    reports = InternReport.objects.filter(intern=intern).order_by('week')
+    # Summarize all new learnings
+    all_new_learnings = " ".join([r.new_learnings for r in reports if r.new_learnings])
+    summary = all_new_learnings if all_new_learnings else "No new learnings submitted."
+    # Map summary to PO counts
+    po_counts = map_summary_to_po(all_new_learnings)
+    total = sum(po_counts.values())
+    if total > 0:
+        po_percentages = {po: round((count / total) * 100, 2) for po, count in po_counts.items()}
+    else:
+        po_percentages = {po: 0 for po in po_counts}
+    # Prepare graph data
+    graphs_data = {
+        "labels": list(po_counts.keys()),
+        "data": [po_percentages[po] for po in po_counts.keys()],
+    }
+    context = {
+        "intern": intern,
+        "reports": reports,
+        "summary": summary,
+        "graphs_data": json.dumps(graphs_data),
+        "po_percentages": po_percentages,
+    }
+    return render(request, "analyzer_app/coordinator_student_detail.html", context)
+
+from collections import defaultdict
+import re
+from django.utils.html import strip_tags
+
+# Example PO keyword mapping (you can customize this)
+PO_KEYWORDS = {
+    'PO:A': ['design', 'system', 'model', 'develop'],
+    'PO:B': ['analyze', 'data', 'problem', 'investigation'],
+    'PO:C': ['communication', 'report', 'presentation', 'document'],
+    'PO:D': ['ethics', 'responsibility', 'society'],
+}
+
+def extract_po_distribution(text):
+    text = text.lower()
+    word_counts = defaultdict(int)
+    total_matches = 0
+
+    for po, keywords in PO_KEYWORDS.items():
+        for kw in keywords:
+            matches = len(re.findall(r'\b{}\b'.format(re.escape(kw)), text))
+            word_counts[po] += matches
+            total_matches += matches
+
+    # Convert counts to percentages
+    po_percentages = {}
+    for po, count in word_counts.items():
+        if total_matches > 0:
+            po_percentages[po] = round((count / total_matches) * 100, 2)
+        else:
+            po_percentages[po] = 0.0
+    return po_percentages
+
+def coordinator_student_detail_view(request, intern_id):
+    intern = Intern.objects.get(id=intern_id)
+    reports = InternReport.objects.filter(intern=intern).order_by('week', 'date')
+
+    # Summarize all reports
+    all_texts = ' '.join([strip_tags(report.activities + ' ' + report.new_learnings) for report in reports])
+    summarized_text = all_texts[:500] + '...' if len(all_texts) > 500 else all_texts  # Simple summary
+
+    po_distribution = extract_po_distribution(summarized_text)
+
+    context = {
+        'intern': intern,
+        'reports': reports,
+        'summary': summarized_text,
+        'po_distribution': po_distribution,
+    }
+    return render(request, 'analyzer_app/coordinator_student_detail.html', context)
