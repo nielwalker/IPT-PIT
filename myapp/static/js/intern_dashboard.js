@@ -236,3 +236,57 @@ document.getElementById('week-form').addEventListener('submit', function (event)
     })
     .catch(error => console.error('Error:', error));
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    const overviewBtn = document.querySelector('[data-action="overview"]');
+    const overviewSection = document.getElementById('overview-section');
+    const formContainer = document.querySelector('.form-container');
+
+    overviewBtn.addEventListener('click', function () {
+        formContainer.innerHTML = ''; // Hide any form loaded before
+        overviewSection.style.display = 'block';
+    });
+
+    // Optional: handle Upload Journal / Add Week Report buttons here
+    document.querySelectorAll('.nav-button').forEach(button => {
+        button.addEventListener('click', function () {
+            const action = this.getAttribute('data-action');
+            if (action !== 'overview') {
+                overviewSection.style.display = 'none';
+            }
+        });
+    });
+
+    // Hook for update and delete (only log for now)
+    document.querySelectorAll('.update-report-btn').forEach(button => {
+        button.addEventListener('click', function () {
+            const reportId = this.getAttribute('data-id');
+            alert(`Update Report ID: ${reportId}`);
+            // TODO: Load the update form via AJAX or render it into formContainer
+        });
+    });
+
+    document.querySelectorAll('.delete-report-btn').forEach(button => {
+        button.addEventListener('click', function () {
+            const reportId = this.getAttribute('data-id');
+            if (confirm('Are you sure you want to delete this report?')) {
+                fetch(`/delete-report/${reportId}/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': getCSRFToken(),
+                    }
+                }).then(response => {
+                    if (response.ok) {
+                        location.reload();
+                    } else {
+                        alert('Failed to delete report.');
+                    }
+                });
+            }
+        });
+    });
+
+    function getCSRFToken() {
+        return document.querySelector('[name=csrfmiddlewaretoken]').value;
+    }
+});

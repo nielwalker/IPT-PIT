@@ -990,3 +990,12 @@ def chairman_coordinator_detail(request, coordinator_id):
         'graphs_data': json.dumps(graphs_data),
     }
     return render(request, 'analyzer_app/chairman_coordinator_detail.html', context)
+
+@require_POST
+def delete_week_report(request, report_id):
+    from .models import InternReport
+    report = get_object_or_404(InternReport, id=report_id)
+    if 'intern_id' in request.session and report.intern.id == request.session['intern_id']:
+        report.delete()
+        return HttpResponse(status=200)
+    return HttpResponse(status=403)

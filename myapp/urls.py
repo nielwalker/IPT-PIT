@@ -10,4 +10,5 @@ urlpatterns = [
     path('coordinator/submit-update/', coordinator_submit_update_view, name='coordinator_submit_update'),
     path('chairman/coordinator/<int:coordinator_id>/', chairman_coordinator_detail, name='chairman_coordinator_detail'),
     path('coordinator/intern-summary/<int:intern_id>/', views.coordinator_intern_summary, name='coordinator_intern_summary'),
+    path('delete-report/<int:report_id>/', views.delete_week_report, name='delete_report'),
 ]
