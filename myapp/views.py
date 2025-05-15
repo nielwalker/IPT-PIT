@@ -762,10 +762,21 @@ from django.utils.html import strip_tags
 
 # Example PO keyword mapping (you can customize this)
 PO_KEYWORDS = {
-    'PO:A': ['design', 'system', 'model', 'develop'],
-    'PO:B': ['analyze', 'data', 'problem', 'investigation'],
-    'PO:C': ['communication', 'report', 'presentation', 'document'],
-    'PO:D': ['ethics', 'responsibility', 'society'],
+    'PO:A': ['scienc', 'scientif', 'mathemat', 'math', 'algebra', 'calculus', 'critic', 'analyt', 'logic', 'reason', 'creativ', 'innovat', 'ideat'],
+    'PO:B': ['best', 'practic', 'convent', 'standard', 'protocol', 'guidelin', 'norm'],
+    'PO:C': ['analyz', 'examin', 'assess', 'evalu', 'inspect', 'complex', 'complic', 'difficulti', 'challeng', 'quantit', 'numer', 'mathemat', 'requir', 'criteri', 'specif'],
+    'PO:D': ['user', 'need', 'evalu', 'assess', 'review', 'analysi', 'administr', 'manag', 'supervis'],
+    'PO:E': ['design', 'develop', 'architect', 'structur', 'implement', 'build', 'creat', 'evalu', 'test', 'review', 'component', 'modul', 'element', 'program', 'system', 'softwar'],
+    'PO:F': ['integr', 'combin', 'merg', 'public', 'health', 'commun', 'secur', 'safeti', 'well', 'societ', 'social'],
+    'PO:G': ['adapt', 'adjust', 'modifi', 'custom', 'techniqu', 'method', 'approach', 'tool', 'util', 'applic', 'limit', 'constraint', 'boundari'],
+    'PO:H': ['collabor', 'togeth', 'cooper', 'coordin', 'leader', 'lead', 'supervis', 'manag', 'team', 'group', 'squad', 'multidisciplinari', 'cross', 'function'],
+    'PO:I': ['project', 'plan', 'schedul', 'timeline', 'roadmap', 'mileston'],
+    'PO:J': ['communic', 'convey', 'express', 'report', 'share', 'oral', 'spoken', 'verbal', 'written', 'textual', 'document', 'persuas', 'convinc', 'effect'],
+    'PO:K': ['impact', 'effect', 'influenc', 'organ', 'compani', 'institut', 'societi', 'commun', 'public'],
+    'PO:L': ['ethic', 'moral', 'principl', 'legal', 'law', 'compliant', 'secur', 'protect', 'safeti', 'respons', 'oblig', 'duti'],
+    'PO:M': ['independ', 'learn', 'self', 'studi', 'autonom', 'self', 'pace', 'special', 'field', 'domain', 'knowledg', 'expertis'],
+    'PO:N': ['generat', 'creat', 'produc', 'knowledg', 'inform', 'insight', 'research', 'investig', 'explor', 'develop', 'progress', 'advanc'],
+    'PO:O': ['filipino', 'philippin', 'pinoy', 'heritag', 'tradit', 'legaci', 'cultur', 'custom', 'ident', 'valu']
 }
 
 def extract_po_distribution(text):
