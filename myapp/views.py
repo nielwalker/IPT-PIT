@@ -365,18 +365,6 @@ def coordinator_submit_update_view(request):
         })
     return redirect('coordinator_login')
 
-def chairman_coordinator_detail_view(request, coordinator_id):
-    coordinator = Coordinator.objects.get(id=coordinator_id)
-    section_updates = SectionUpdate.objects.filter(coordinator=coordinator).order_by('-submitted_at')
-    assessments = Assessment.objects.filter(coordinator=coordinator).order_by('-week')
-    interns = Intern.objects.filter(coordinator=coordinator).order_by('last_name')  # Only interns under this coordinator
-    return render(request, 'analyzer_app/chairman_coordinator_detail.html', {
-        'coordinator': coordinator,
-        'section_updates': section_updates,
-        'assessments': assessments,
-        'interns': interns,
-    })
-
 def test_session_view(request):
     request.session['test_key'] = 'test_value'
     return HttpResponse("Session test complete")
@@ -868,3 +856,137 @@ def coordinator_student_detail_view(request, intern_id):
         'po_distribution': po_distribution,
     }
     return render(request, 'analyzer_app/coordinator_student_detail.html', context)
+
+import nltk
+from nltk.tokenize import sent_tokenize, word_tokenize
+from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer
+from django.utils.html import strip_tags
+
+def summarize_section_new_learning(section_name):
+    from django.utils.html import strip_tags
+    from nltk.tokenize import sent_tokenize, word_tokenize
+    from nltk.corpus import stopwords
+    from nltk.stem import PorterStemmer
+    import nltk
+    nltk.download('punkt', quiet=True)
+    nltk.download('stopwords', quiet=True)
+
+    interns = Intern.objects.filter(section=section_name)
+    reports = InternReport.objects.filter(intern__in=interns)
+
+    all_text = " ".join([strip_tags(r.new_learnings) for r in reports if r.new_learnings])
+    if not all_text.strip():
+        return "No new learning data found for this section."
+
+    sentences = sent_tokenize(all_text)
+    stemmer = PorterStemmer()
+    stop_words = set(stopwords.words('english'))
+    word_freq = {}
+
+    for sentence in sentences:
+        for word in word_tokenize(sentence):
+            w = word.lower()
+            if w.isalpha() and w not in stop_words:
+                stemmed = stemmer.stem(w)
+                word_freq[stemmed] = word_freq.get(stemmed, 0) + 1
+
+    ranked_sentences = []
+    for sentence in sentences:
+        score = 0
+        for word in word_tokenize(sentence.lower()):
+            stemmed = stemmer.stem(word)
+            score += word_freq.get(stemmed, 0)
+        ranked_sentences.append((score, sentence))
+
+    ranked_sentences.sort(reverse=True)
+    top_sentences = [s for _, s in ranked_sentences[:3]]
+    return " ".join(top_sentences)
+
+def chairman_coordinator_detail(request, coordinator_id):
+    coordinator = get_object_or_404(Coordinator, id=coordinator_id)
+    interns = Intern.objects.filter(coordinator=coordinator)
+    section = interns[0].section if interns else None
+    section_summary = summarize_section_new_learning(section) if section else "No new learning data found for this section."
+    section_updates = SectionUpdate.objects.filter(coordinator=coordinator).order_by('-submitted_at')
+    assessments = Assessment.objects.filter(coordinator=coordinator).order_by('-week')
+    
+    section_summary = summarize_section_new_learning(section) if section else "No new learning data found for this section."
+    po_distribution = extract_po_distribution(section_summary)
+    context = {
+        'coordinator': coordinator,
+        'interns': interns,
+        'section_summary': section_summary,
+        'section_updates': section_updates,
+        'assessments': assessments,
+        'po_distribution_json': json.dumps(po_distribution),
+    }
+    return render(request, 'analyzer_app/chairman_coordinator_detail.html', context)
+
+import json
+import re
+
+# Example PO keywords (customize as needed)
+PO_KEYWORDS = {
+    'PO:A': ['design', 'system', 'model', 'develop'],
+    'PO:B': ['analyze', 'data', 'problem', 'investigation'],
+    'PO:C': ['communication', 'report', 'presentation', 'document'],
+    'PO:D': ['ethics', 'responsibility', 'society'],
+}
+
+def extract_po_distribution(text):
+    text = text.lower()
+    po_counts = {po: 0 for po in PO_KEYWORDS}
+    total = 0
+    for po, keywords in PO_KEYWORDS.items():
+        for kw in keywords:
+            count = len(re.findall(r'\b{}\b'.format(re.escape(kw)), text))
+            po_counts[po] += count
+            total += count
+    # Convert to percentage
+    if total > 0:
+        po_percentages = {po: round((count / total) * 100, 2) for po, count in po_counts.items()}
+    else:
+        po_percentages = {po: 0 for po in po_counts}
+    return po_percentages
+
+# In your chairman_coordinator_detail view:
+
+def coordinator_student_detail_view(request, intern_id):
+    intern = get_object_or_404(Intern, id=intern_id)
+    reports = InternReport.objects.filter(intern=intern).order_by('week')
+    all_text = " ".join([report.new_learnings for report in reports if report.new_learnings])
+    summary = summarize_text(all_text) if all_text.strip() else "No new learnings submitted."
+    po_distribution = extract_po_distribution(summary)
+    context = {
+        'intern': intern,
+        'reports': reports,
+        'summary': summary,
+        'po_distribution_json': json.dumps(po_distribution),
+    }
+    return render(request, 'analyzer_app/coordinator_student_detail.html', context)
+
+def chairman_coordinator_detail(request, coordinator_id):
+    coordinator = get_object_or_404(Coordinator, id=coordinator_id)
+    interns = Intern.objects.filter(coordinator=coordinator)
+    section = interns.first().section if interns.exists() else None
+    section_summary = summarize_section_new_learning(section) if section else "No new learning data found for this section."
+    section_updates = SectionUpdate.objects.filter(coordinator=coordinator).order_by('-submitted_at')
+    assessments = Assessment.objects.filter(coordinator=coordinator).order_by('-week')
+
+    # Now section_summary is defined, so this is safe:
+    po_distribution = extract_po_distribution(section_summary)
+    graphs_data = {
+        "labels": list(po_distribution.keys()),
+        "data": list(po_distribution.values()),
+    }
+
+    context = {
+        'coordinator': coordinator,
+        'interns': interns,
+        'section_summary': section_summary,
+        'section_updates': section_updates,
+        'assessments': assessments,
+        'graphs_data': json.dumps(graphs_data),
+    }
+    return render(request, 'analyzer_app/chairman_coordinator_detail.html', context)
