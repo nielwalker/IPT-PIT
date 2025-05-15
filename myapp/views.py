@@ -762,21 +762,21 @@ from django.utils.html import strip_tags
 
 # Example PO keyword mapping (you can customize this)
 PO_KEYWORDS = {
-    'PO:A': ['scienc', 'scientif', 'mathemat', 'math', 'algebra', 'calculus', 'critic', 'analyt', 'logic', 'reason', 'creativ', 'innovat', 'ideat'],
+    'PO:A': ['science', 'scientific', 'mathematic', 'math', 'algebra', 'calculus', 'critic', 'analyt', 'logic', 'reason', 'creative', 'innovative', 'idea'],
     'PO:B': ['best', 'practic', 'convent', 'standard', 'protocol', 'guidelin', 'norm'],
-    'PO:C': ['analyz', 'examin', 'assess', 'evalu', 'inspect', 'complex', 'complic', 'difficulti', 'challeng', 'quantit', 'numer', 'mathemat', 'requir', 'criteri', 'specif'],
-    'PO:D': ['user', 'need', 'evalu', 'assess', 'review', 'analysi', 'administr', 'manag', 'supervis'],
-    'PO:E': ['design', 'develop', 'architect', 'structur', 'implement', 'build', 'creat', 'evalu', 'test', 'review', 'component', 'modul', 'element', 'program', 'system', 'softwar'],
-    'PO:F': ['integr', 'combin', 'merg', 'public', 'health', 'commun', 'secur', 'safeti', 'well', 'societ', 'social'],
-    'PO:G': ['adapt', 'adjust', 'modifi', 'custom', 'techniqu', 'method', 'approach', 'tool', 'util', 'applic', 'limit', 'constraint', 'boundari'],
-    'PO:H': ['collabor', 'togeth', 'cooper', 'coordin', 'leader', 'lead', 'supervis', 'manag', 'team', 'group', 'squad', 'multidisciplinari', 'cross', 'function'],
-    'PO:I': ['project', 'plan', 'schedul', 'timeline', 'roadmap', 'mileston'],
-    'PO:J': ['communic', 'convey', 'express', 'report', 'share', 'oral', 'spoken', 'verbal', 'written', 'textual', 'document', 'persuas', 'convinc', 'effect'],
-    'PO:K': ['impact', 'effect', 'influenc', 'organ', 'compani', 'institut', 'societi', 'commun', 'public'],
-    'PO:L': ['ethic', 'moral', 'principl', 'legal', 'law', 'compliant', 'secur', 'protect', 'safeti', 'respons', 'oblig', 'duti'],
-    'PO:M': ['independ', 'learn', 'self', 'studi', 'autonom', 'self', 'pace', 'special', 'field', 'domain', 'knowledg', 'expertis'],
-    'PO:N': ['generat', 'creat', 'produc', 'knowledg', 'inform', 'insight', 'research', 'investig', 'explor', 'develop', 'progress', 'advanc'],
-    'PO:O': ['filipino', 'philippin', 'pinoy', 'heritag', 'tradit', 'legaci', 'cultur', 'custom', 'ident', 'valu']
+    'PO:C': ['analyze', 'examine', 'assess', 'evalute', 'inspect', 'complex', 'complicate', 'difficulties', 'challenge', 'quantity', 'number', 'mathematic', 'require', 'criteria', 'specify'],
+    'PO:D': ['user', 'need', 'evaluate', 'assess', 'review', 'analysis', 'administrator', 'manage', 'supervise'],
+    'PO:E': ['design', 'develop', 'architect', 'structure', 'implement', 'build', 'create', 'evaluate', 'test', 'review', 'component', 'module', 'element', 'program', 'system', 'software'],
+    'PO:F': ['integrate', 'combine', 'merge', 'public', 'health', 'community', 'secure', 'safety', 'well', 'society', 'social'],
+    'PO:G': ['adapt', 'adjust', 'modify', 'custom', 'technique', 'method', 'approach', 'tool', 'util', 'applicate', 'limit', 'constraint', 'boundaries'],
+    'PO:H': ['collaborator', 'together', 'cooperate', 'coordinate', 'leader', 'lead', 'supervise', 'manage', 'team', 'group', 'squad', 'multidisciplinary', 'cross', 'function'],
+    'PO:I': ['project', 'plan', 'schedule', 'timeline', 'roadmap', 'milestone'],
+    'PO:J': ['communicate', 'convey', 'express', 'report', 'share', 'oral', 'spoken', 'verbal', 'written', 'textual', 'document', 'persuasive', 'convince', 'effect'],
+    'PO:K': ['impact', 'effect', 'influence', 'organ', 'companie', 'institute', 'society', 'community', 'public'],
+    'PO:L': ['ethic', 'moral', 'principle', 'legal', 'law', 'compliant', 'secure', 'protect', 'safety', 'response', 'oblige', 'dutie'],
+    'PO:M': ['independent', 'learn', 'self', 'studies', 'autonom', 'self', 'pace', 'special', 'field', 'domain', 'knowledge', 'expertise'],
+    'PO:N': ['generate', 'create', 'produce', 'knowledge', 'inform', 'insight', 'research', 'investigate', 'explore', 'develop', 'progress', 'advance'],
+    'PO:O': ['filipino', 'philippine', 'pinoy', 'heritag', 'tradit', 'legaci', 'culture', 'custome', 'ident', 'value']
 }
 
 def extract_po_distribution(text):
@@ -804,7 +804,7 @@ def coordinator_student_detail_view(request, intern_id):
     reports = InternReport.objects.filter(intern=intern).order_by('week', 'date')
 
     # Summarize all reports
-    all_texts = ' '.join([strip_tags(report.activities + ' ' + report.new_learnings) for report in reports])
+    all_texts = ' '.join([strip_tags(report.new_learnings) for report in reports if report.new_learnings])
     summarized_text = all_texts[:500] + '...' if len(all_texts) > 500 else all_texts  # Simple summary
 
     po_distribution = extract_po_distribution(summarized_text)
