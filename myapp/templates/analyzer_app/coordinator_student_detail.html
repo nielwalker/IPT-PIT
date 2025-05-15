@@ -43,9 +43,6 @@
         </tbody>
     </table>
 
-    <h4>Summarized Weekly Report</h4>
-    <p>{{ summary }}</p>
-
     <h4>Summary of All New Learnings</h4>
     <div class="card p-3 mb-3">
         {{ summary|default:"No new learnings submitted." }}
@@ -53,9 +50,7 @@
 
     <h4>PO Contribution Chart</h4>
     <div style="max-width:700px;">
-        <canvas id="poChart" width="700" height="400"></canvas>
     </div>
-    <pre>DEBUG: {{ graphs_data|safe }}</pre>
     <script id="graphs-data" type="application/json">
 {{ graphs_data|safe }}
     </script>
@@ -106,7 +101,6 @@
         });
     </script>
 
-    <h4>PO Distribution</h4>
     <canvas id="poChart" width="400" height="200"></canvas>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     {{ po_distribution|json_script:"po-distribution-data" }}
